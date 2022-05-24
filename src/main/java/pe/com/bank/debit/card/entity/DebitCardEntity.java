@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
 public class DebitCardEntity {
 	
 	@Id
-	private String debitCardId;
-	private Integer numberCard;
+	private String id;
+	private Long numberCard;
 	private Date openingDate;
 	private Date dueDate;
 	private Integer cvv;

@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.AllArgsConstructor;
 import pe.com.bank.debit.card.entity.DebitCardEntity;
 import pe.com.bank.debit.card.service.DebitCardService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/v1")
 public class DebitCardController {
