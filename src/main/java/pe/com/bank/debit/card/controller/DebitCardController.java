@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
+import pe.com.bank.debit.card.dto.AddDebitCardDTO;
 import pe.com.bank.debit.card.entity.DebitCardEntity;
 import pe.com.bank.debit.card.service.DebitCardService;
 import reactor.core.publisher.Flux;
@@ -33,13 +34,18 @@ public class DebitCardController {
     }
 
     @PostMapping("/createDebitCard")
-    public Mono<DebitCardEntity> addCustomer(@RequestBody DebitCardEntity debitCardEntity) {
+    public Mono<DebitCardEntity> createDebitCard(@RequestBody DebitCardEntity debitCardEntity) {
         return debitCardService.createDebitCard(debitCardEntity);
     }
 
     @PutMapping("/updateDebitCard/{id}")
-    public Mono<DebitCardEntity> updateCustomer(@RequestBody DebitCardEntity debitCardEntity, @PathVariable String id) {
+    public Mono<DebitCardEntity> updateDebitCard(@RequestBody DebitCardEntity debitCardEntity, @PathVariable String id) {
         return debitCardService.updateDebitCard(debitCardEntity, id);
+    }
+    
+    @PostMapping("/createDebitCardUpdateAccount")
+    public Mono<DebitCardEntity> createDebitCardUpdateAccount(@RequestBody AddDebitCardDTO addDebitCardDTO) {
+        return debitCardService.createDebitCardUpdateAccount(addDebitCardDTO);
     }
 
 }

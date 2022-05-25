@@ -3,6 +3,9 @@ package pe.com.bank.debit.card.service;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import pe.com.bank.debit.card.client.AccountRestClient;
+import pe.com.bank.debit.card.client.entity.AccountEntity;
+import pe.com.bank.debit.card.dto.AddDebitCardDTO;
 import pe.com.bank.debit.card.entity.DebitCardEntity;
 import pe.com.bank.debit.card.repository.DebitCardRepository;
 import reactor.core.publisher.Flux;
@@ -13,6 +16,7 @@ import reactor.core.publisher.Mono;
 public class DebitCardServiceImpl implements DebitCardService{
 	
 	DebitCardRepository debitCardRepository;
+	AccountRestClient accountRestClient;
 
 	    public Flux<DebitCardEntity> listAllDebitCard(){
 	        return debitCardRepository.findAll();
@@ -24,6 +28,33 @@ public class DebitCardServiceImpl implements DebitCardService{
 
 	    public Mono<DebitCardEntity> createDebitCard(DebitCardEntity debitCardEntity){
 	        return debitCardRepository.save(debitCardEntity);
+	    }
+	    
+	    public Mono<DebitCardEntity> createDebitCardUpdateAccount(AddDebitCardDTO addDebitCardDTO){
+	    	
+	    	
+	    	
+	    	DebitCardEntity  debitCardEntity = new DebitCardEntity();
+    		debitCardEntity.setNumberCard(addDebitCardDTO.getNumberCard());
+    		debitCardEntity.setOpeningDate(addDebitCardDTO.getOpeningDate());
+    		debitCardEntity.setDueDate(addDebitCardDTO.getDueDate());
+    		debitCardEntity.setCvv(addDebitCardDTO.getCvv());
+    		debitCardEntity.setOnlinePayment(addDebitCardDTO.getOnlinePayment());
+    		debitCardEntity.setCustomerId(addDebitCardDTO.getCustomerId());	 
+	    	
+    		return debitCardRepository.save(debitCardEntity).flatMap( debitCard -> {
+    			
+    			AccountEntity accountEntity = new AccountEntity();
+    			accountEntity.setCardId(debitCard.getCardId());
+    			accountEntity.setCardLabel("CP");
+    					
+    					
+    			return accountRestClient.updateAccountById(accountEntity,addDebitCardDTO.getAccountId()).flatMap( c -> {
+    				return Mono.just(debitCard);
+    			});
+    		});
+    		    	
+	    	
 	    }
 
 	    public Mono<Void> deleteDebitCardById(String id) {

@@ -1,9 +1,6 @@
-package pe.com.bank.debit.card.entity;
+package pe.com.bank.debit.card.dto;
 
 import java.util.Date;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -14,11 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "debit_card")
-public class DebitCardEntity {
+public class AddDebitCardDTO {
 	
-	@Id
-	private String cardId;
 	private Long numberCard;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date openingDate;
@@ -27,5 +21,6 @@ public class DebitCardEntity {
 	private Integer cvv;
 	private String onlinePayment;
 	private String customerId;
+	private String accountId;
 
 }
