@@ -3,6 +3,8 @@ package pe.com.bank.debit.card.client;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import pe.com.bank.debit.card.client.entity.AccountEntity;
 import reactor.core.publisher.Mono;
 
@@ -21,12 +23,14 @@ public class AccountRestClient {
 	  
 	  
 	  
-	  public Mono<AccountEntity> getAccountByCardId(String cardId){
-		  var url = accountUrl.concat("/cardId/{cardId}");
+	  public Mono<AccountEntity> getAccountCard(String cardId){
+		  var url = UriComponentsBuilder.fromHttpUrl(accountUrl)
+	                .queryParam("cardId", cardId)
+	                .buildAndExpand().toUriString();
 		  
 		  return  webClient
 	                .get()
-	                .uri(url,cardId)
+	                .uri(url)
 	                .retrieve()
 	                .bodyToMono(AccountEntity.class)
 	                .log();
